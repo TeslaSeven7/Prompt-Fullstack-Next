@@ -1,22 +1,25 @@
 import mongoose from 'mongoose'
 
-let isConnected = false
+let isConnected = false // track the connection
 
-export const conmectToDB = async () => {
+export const connectToDB = async () => {
   mongoose.set('strictQuery', true)
+
   if (isConnected) {
-    console.log('already connected to mongdb')
+    console.log('MongoDB is already connected')
     return
   }
+
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
-      dbName: 'Project 0',
+      dbName: 'project_zero',
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
 
     isConnected = true
-    console.log('im connected')
+
+    console.log('MongoDB connected')
   } catch (error) {
     console.log(error)
   }

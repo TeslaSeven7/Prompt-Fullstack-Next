@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 
 export const Nav = () => {
   const userLoggedIn = false
+  const { datat: session } = useSession()
   const [providers, setProviders] = useState(null)
   const [toggleDropDown, setToggleDropDown] = useState(false)
   useEffect(() => {
@@ -27,7 +28,7 @@ export const Nav = () => {
         />
       </Link>
       <div className="hidden sm:flex">
-        {userLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create-prompt" className="black_btn">
               Create Post
@@ -62,7 +63,7 @@ export const Nav = () => {
         )}
       </div>
       <div className="relative flex sm:hidden">
-        {userLoggedIn ? (
+        {session?.user ? (
           <div className="flex">
             <Image
               src="/assets/img/logo.svg"
@@ -107,7 +108,19 @@ export const Nav = () => {
             )}
           </div>
         ) : (
-          <></>
+          <>
+            {providers &&
+              Object.values(providers).map((provider) => (
+                <button
+                  type="button"
+                  key={provider.name}
+                  onClick={() => signIn(provider.id)}
+                  className="black_btn"
+                >
+                  SignIn
+                </button>
+              ))}
+          </>
         )}
       </div>
     </nav>
